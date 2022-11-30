@@ -1,7 +1,7 @@
-spring-practice/Servers/
-spring-practice/.settings/
-spring-practice/target/
-spring-practice/.springBeans
+Servers/
+.settings/
+target/
+.springBeans
 *.properties
 #이하 내용은 사이트에서 가져옴
 

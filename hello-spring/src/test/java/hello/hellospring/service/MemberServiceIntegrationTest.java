@@ -9,25 +9,23 @@ import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 
-public class MemberServiceTest {
+@SpringBootTest
+@Transactional
+public class MemberServiceIntegrationTest {
 	
+	@Autowired
 	MemberService memberService;
-	MemoryMemberRepository memberRepository;
 	
-	@BeforeEach
-	public void beforeEach() {
-		memberRepository = new MemoryMemberRepository();
-		memberService = new MemberService(memberRepository);
-	}
-	
-	@AfterEach
-	public void clear() {
-		memberRepository.clearStore();
-	}
+	@Autowired
+	MemberRepository memberRepository;
 	
 	@Test
 	public void join() {
@@ -39,7 +37,7 @@ public class MemberServiceTest {
 		assertThat(member.getName()).isEqualTo(findMember.getName()); 
 	}
 	
-	//중복회원 예외 확인
+	//중복 시 예외를 던지는지 테스트
 	@Test
 	public void joinDup() {
 		Member member1 = new Member();
@@ -80,9 +78,6 @@ public class MemberServiceTest {
 		memberService.join(member2);
 		
 		Member findMember = memberService.findOne(memberId).get();
-		System.out.println(findMember);
-		System.out.println(member);
-		
 		assertThat(member).isEqualTo(findMember);	
 	}
 
